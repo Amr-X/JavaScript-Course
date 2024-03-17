@@ -1,7 +1,7 @@
 const defaultResult = 0;
 let currentResult = defaultResult;
 let logEntries = [];
-
+//
 // Gets input from input field
 // .value gets you the string value not int 
 function getUserNumberInput() {
@@ -15,7 +15,7 @@ function createAndWriteOutput(operator, resultBeforeCalc, calcNumber) {
 }
 
 // writes additional information about what is 
-// happenning in the console with objects and arrays
+// happening in the console with objects and arrays
 function writeToLog(
   operationIdentifier,
   prevResult,
@@ -34,24 +34,26 @@ function writeToLog(
 // calculate Result based on a condition 
 // no need for 4 function and repeating yourself
 function calculateResult(calculationType){
+  const enteredNumber = getUserNumberInput();
 
   if (
     calculationType!=="ADD"&&
-    calculationType!=="SUPTRACT"&&
+    calculationType!=="SUBTRACT"&&
     calculationType!=="MULTIPLY"&&
-    calculationType!=="DIVIDE"
+    calculationType!=="DIVIDE" ||
+    !enteredNumber //A falsy value it holds which is zero, so it returns and doesn't continue the code
   ){
     return;
   }
 
-  const enteredNumber = getUserNumberInput();
+
   const initialResult = currentResult;
   let mathOperator;
   if(calculationType==="ADD"){
     currentResult += enteredNumber;
     mathOperator= "+";
   }
-  else if (calculationType==="SUPTRACT"){
+  else if (calculationType==="SUBTRACT"){
     currentResult -= enteredNumber;
     mathOperator= "-";
   }else if (calculationType==="MULTIPLY"){
