@@ -83,8 +83,19 @@ function writeToLog(ev, val, monsterHealth, playerHealth) {
 }
 
 function endRound() {
+    const initialPlayerHealth = currentPlayerHealth;
     const playerDamage = dealPlayerDamage(MONSTER_ATTACK_VALUE);
     currentPlayerHealth -= playerDamage;
+
+    // How the bonus works
+    if (currentPlayerHealth <= 0 && hasBonusLife) {
+        hasBonusLife = false;
+        removeBonusLife();
+        setPlayerHealth(initialPlayerHealth);
+        currentPlayerHealth = initialPlayerHealth;
+        alert('You have been saved!');
+    }
+
     writeToLog(LOG_EVENT_MONSTER_ATTACK, playerDamage, currentMonsterHealth, currentPlayerHealth);
     if (currentMonsterHealth <= 0 && currentPlayerHealth > 0) {
         alert("You Won!");
