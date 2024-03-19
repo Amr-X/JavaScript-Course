@@ -12,6 +12,7 @@ const LOG_EVENT_STRONG_PLAYER_ATTACK = 'STRONG_PLAYER_ATTACK';
 const LOG_EVENT_MONSTER_ATTACK = 'MONSTER_ATTACK';
 const LOG_EVENT_PLAYER_HEAL = 'PLAYER_HEAL';
 const LOG_EVENT_GAME_OVER = 'GAME_OVER';
+let lastLoggedEntry;
 
 // Input for the chosenMax Life
 const enteredValue = prompt('Maximum life for you and the monster.', '100');
@@ -115,15 +116,16 @@ function endRound() {
 }
 
 function AttackMode(mode) {
-    let maxDamage;
-    let logEvent;
-    if (mode === MODE_ATTACK) {
-        maxDamage = ATTACK_VALUE;
-        logEvent = LOG_EVENT_PLAYER_ATTACK;
-    } else if (mode === MODE_STRONG_ATTACK) {
-        maxDamage = STRONG_ATTACK_VALUE;
-        logEvent = LOG_EVENT_STRONG_PLAYER_ATTACK;
-    }
+    //Ternary Operator
+    let maxDamage = mode === MODE_ATTACK ? ATTACK_VALUE : STRONG_ATTACK_VALUE;
+    let logEvent = mode === MODE_STRONG_ATTACK ? LOG_EVENT_STRONG_PLAYER_ATTACK : LOG_EVENT_PLAYER_ATTACK;
+    // if (mode === MODE_ATTACK) {
+    //     maxDamage = ATTACK_VALUE;
+    //     logEvent = LOG_EVENT_PLAYER_ATTACK;
+    // } else if (mode === MODE_STRONG_ATTACK) {
+    //     maxDamage = STRONG_ATTACK_VALUE;
+    //     logEvent = LOG_EVENT_STRONG_PLAYER_ATTACK;
+    // }
     const damage = dealMonsterDamage(maxDamage);
     currentMonsterHealth -= damage;
     writeToLog(logEvent,
@@ -145,7 +147,7 @@ function strongAttackHandler() {
     AttackMode("STRONG_ATTACK");
 }
 
-function healPlayerHandler() { //////?????????/////??///??//
+function healPlayerHandler() {
     let healValue;
     if (currentPlayerHealth >= chosenMaxLife - HEAL_VALUE) {
         alert("You Can't heal to more that your max initial health.");
@@ -161,7 +163,35 @@ function healPlayerHandler() { //////?????????/////??///??//
 }
 
 function showLogHandler() {
-    console.log(battleLog);
+    // FOR lOOP
+    // for (let i =0; i<battleLog.length; i++)
+    // console.log(battleLog[i]);\
+
+    //FOR OF used for arrays
+    // Every time the logEntry variable is different based on the array
+    // no access for the index here and a bit slow
+    // for (const logEntry of battleLog) {
+    //     console.log(logEntry);
+    // }
+
+
+    console.log('--------------------')
+    let i = 0;
+    for (const logEntry of battleLog) {
+        if ((!lastLoggedEntry && lastLoggedEntry !== 0) || lastLoggedEntry < i) {
+
+
+            console.log(`#${i}`);
+            for (const key in logEntry) {
+                console.log(`${key}=> ${logEntry[key]}`);
+
+            }
+            lastLoggedEntry = i;
+            break;
+        }
+        i++
+    }
+
 }
 
 attackBtn.addEventListener('click', attackHandler);
