@@ -15,12 +15,25 @@ const LOG_EVENT_GAME_OVER = 'GAME_OVER';
 let lastLoggedEntry;
 
 // Input for the chosenMax Life
-const enteredValue = prompt('Maximum life for you and the monster.', '100');
-let chosenMaxLife = parseInt(enteredValue);
-if (isNaN(chosenMaxLife) || chosenMaxLife <= 0) {
-    alert('Entered Value is invalid! Your initial value is 100.')
-    chosenMaxLife = 100;
+function getMaxLifeValue() {
+    const enteredValue = prompt('Maximum life for you and the monster.', '100');
+    const parsedValue = parseInt(enteredValue);
+    if (isNaN(parsedValue) || parsedValue <= 0) {
+        throw {message: 'Invalid Number!'}
+    }
+    return parsedValue;
 }
+
+let chosenMaxLife;
+try {
+    chosenMaxLife = getMaxLifeValue()
+} catch (error) {
+    console.log(error);
+    chosenMaxLife = 100;
+    alert("You entered something wrong!")
+}
+
+
 let battleLog = [];
 let currentMonsterHealth = chosenMaxLife;
 let currentPlayerHealth = chosenMaxLife;
