@@ -12,7 +12,7 @@ button.addEventListener('click',()=>{
     //     section.className = 'red-bg visible';
     // }
 
-    //or another
+    //or another.
     section.classList.toggle('invisible');
 
 })
