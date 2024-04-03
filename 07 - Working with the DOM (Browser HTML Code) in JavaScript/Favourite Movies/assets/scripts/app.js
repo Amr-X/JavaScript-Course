@@ -27,9 +27,11 @@ const showMovieModalHandler = () => {
 const renderUI =()=>{
     // if there is movies in the array set the display or the entry section to none
     if(movies.length===0){
-        return;
+        entrySection.style.display = 'block';
+    }else{
+        entrySection.style.display = 'none';
     }
-    entrySection.style.display = 'none';
+
 }
 const deleteMovie =(movieId)=>{
     let movieIndex=0;
@@ -44,11 +46,22 @@ const deleteMovie =(movieId)=>{
     const movieList = document.getElementById('movie-list');
     movieList.children[movieIndex].remove(); //not fully supported
     //movieList.removeChild(movieList.children[movieIndex]);
+    cancelMovieDeletion();
+    renderUI();
 }
 const deleteMovieHandler =(movieId)=>{
     deleteModal.classList.add('visible');
     toggleBackdropHandler();
-    // deleteMovie();
+    let yesButton = deleteModal.querySelector('.btn--danger');
+    const noButton = deleteModal.querySelector('.btn--passive');
+    //will not work
+    //yesButton.removeEventListener('click',deleteMovie.bind(null,movieId));
+    yesButton.replaceWith(yesButton.cloneNode(true)); //this hack will work (cloned)
+    yesButton = deleteModal.querySelector('.btn--danger'); //assign to the now node
+    noButton.removeEventListener('click',cancelMovieDeletion);
+    noButton.addEventListener('click',cancelMovieDeletion);
+    yesButton.addEventListener('click',deleteMovie.bind(null,movieId));
+
 }
 const movieRender=(id,titleValue,imageValue,ratingValue)=>{
     // this shouldn't be a global Object, so you can have more than one list created not the same one
@@ -80,11 +93,13 @@ const clearInputs =()=>{
 }
 const cancelAddMovieHandler = () => {
     closeMovieModalHandler();
+    toggleBackdropHandler();
     clearInputs();
 }
 const backdropCancelHandler =()=>{
     closeMovieModalHandler();
     cancelMovieDeletion();
+
 
 }
 const addingMovieHandler = () => {
