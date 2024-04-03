@@ -12,8 +12,16 @@ const movies = [];
 const toggleBackdropHandler = () => {
     backdrop.classList.toggle('visible');
 }
-const toggleMovieModalHandler = () => {
-    modal.classList.toggle('visible');
+const cancelMovieDeletion =()=>{
+    toggleBackdropHandler();
+    deleteModal.classList.remove('visible');
+}
+const closeMovieModalHandler = () => {
+    modal.classList.remove('visible');
+
+}
+const showMovieModalHandler = () => {
+    modal.classList.add('visible');
     toggleBackdropHandler();
 }
 const renderUI =()=>{
@@ -23,19 +31,24 @@ const renderUI =()=>{
     }
     entrySection.style.display = 'none';
 }
-const deleteMovieHandler =(movieId)=>{
+const deleteMovie =(movieId)=>{
     let movieIndex=0;
     for(const movie of movies){
         if(movie.id===movieId){
-           break
+            break
         }else{
             movieIndex++
         }
     }
     movies.splice(movieIndex,1)
     const movieList = document.getElementById('movie-list');
-     movieList.children[movieIndex].remove(); //not fully supported
+    movieList.children[movieIndex].remove(); //not fully supported
     //movieList.removeChild(movieList.children[movieIndex]);
+}
+const deleteMovieHandler =(movieId)=>{
+    deleteModal.classList.add('visible');
+    toggleBackdropHandler();
+    // deleteMovie();
 }
 const movieRender=(id,titleValue,imageValue,ratingValue)=>{
     // this shouldn't be a global Object, so you can have more than one list created not the same one
@@ -60,18 +73,19 @@ const clearInputs =()=>{
         input.value= "";
     }
 
-     // also works
-     // movieInputs[0].value= "";
-     // movieInputs[1].value= "";
-     // movieInputs[2].value= "";
+    // also works
+    // movieInputs[0].value= "";
+    // movieInputs[1].value= "";
+    // movieInputs[2].value= "";
 }
 const cancelAddMovieHandler = () => {
-    toggleMovieModalHandler();
+    closeMovieModalHandler();
     clearInputs();
 }
 const backdropCancelHandler =()=>{
-    toggleMovieModalHandler();
-    clearInputs();
+    closeMovieModalHandler();
+    cancelMovieDeletion();
+
 }
 const addingMovieHandler = () => {
     // Saving Input
@@ -96,12 +110,13 @@ const addingMovieHandler = () => {
     console.log(movies)
     renderUI();
     clearInputs();
-    toggleMovieModalHandler();
+    closeMovieModalHandler();
+    toggleBackdropHandler();
     movieRender(movieObject.id,titleValue,imageValue,ratingValue);
 }
 
 addMovieButton.addEventListener('click',
-    toggleMovieModalHandler);
+    showMovieModalHandler);
 cancelButton.addEventListener('click',
     cancelAddMovieHandler);
 addButton.addEventListener('click',
