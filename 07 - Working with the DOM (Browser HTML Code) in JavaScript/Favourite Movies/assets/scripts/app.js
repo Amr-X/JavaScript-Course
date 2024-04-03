@@ -1,79 +1,109 @@
-const addMovieModal = document.getElementById('add-modal');
-const addMovieModalButton = document.querySelector('header button');
-const backdrop =document.getElementById('backdrop');
-const cancelAddMovieButton = document.querySelector('.btn--passive');
-const confirmAddMovieButton = cancelAddMovieButton.nextElementSibling;
-const userLists = document.querySelectorAll('input');
-const entryTextSection = document.getElementById('entry-text');
-const movies =[];
+const addMovieButton = document.querySelector('header button');
+const modal = document.getElementById('add-modal');
+const backdrop = document.getElementById('backdrop');
+const cancelButton = modal.querySelector('.btn--passive');
+const addButton = cancelButton.nextElementSibling
+const movieInputs = modal.querySelectorAll('input');
+const entrySection = document.getElementById('entry-text');
+const movieList = document.getElementById('movie-list');
+const deleteModal = document.getElementById('delete-modal');
+const movies = [];
 
-const toggleBackdrop =()=>{
+const toggleBackdropHandler = () => {
     backdrop.classList.toggle('visible');
 }
-
-const toggleMovieModal = ()=>{
-    addMovieModal.classList.toggle('visible');
-    toggleBackdrop();
+const toggleMovieModalHandler = () => {
+    modal.classList.toggle('visible');
+    toggleBackdropHandler();
 }
-
-const clearInputs =()=>{
-    for(const usrList of userLists){
-        usrList.value = '';
-    }
-}
-
-const cancelAddMovie =()=>{
-    toggleMovieModal();
-    clearInputs();
-}
-
-const updateUI = ()=>{
+const renderUI =()=>{
+    // if there is movies in the array set the display or the entry section to none
     if(movies.length===0){
-        entryTextSection.style.display='block';
-    }
-    else{
-        entryTextSection.style.display='none';
-    }
-}
-
-const renderMoviveList = (title,image,rating)=> {
-    const newMovieElement = document.createElement('li');
-    newMovieElement.className = 'movie-element'
-    newMovieElement.innerHTML =`
-    <div class="movie-element__image">
-    <img src="${image}" alt="${title}">  
-    </div>
-    <div class="movie-element__info">   
-    <h2>${title}</h2>
-    <p>${rating}/5 starts</p>
-    </div>`
-
-    const theMovieList = document.getElementById('movie-list');
-    theMovieList.append(newMovieElement);
-}
-const confirmAddMovie =()=>{
-    const titleValue=userLists[0].value;
-    const imageValue=userLists[1].value;
-    const ratingValue=userLists[2].value;
-    if (titleValue.trim()===''||imageValue.trim()===''||ratingValue<1||ratingValue>5){
-        alert('Please enter valid input (rating between 1 , 5)')
         return;
     }
+    entrySection.style.display = 'none';
+}
+const deleteMovieHandler =(movieId)=>{
+    let movieIndex=0;
+    for(const movie of movies){
+        if(movie.id===movieId){
+           break
+        }else{
+            movieIndex++
+        }
+    }
+    movies.splice(movieIndex,1)
+    const movieList = document.getElementById('movie-list');
+     movieList.children[movieIndex].remove(); //not fully supported
+    //movieList.removeChild(movieList.children[movieIndex]);
+}
+const movieRender=(id,titleValue,imageValue,ratingValue)=>{
+    // this shouldn't be a global Object, so you can have more than one list created not the same one
+    const movieListItem = document.createElement("li");
+    movieListItem.className='movie-element';
+    movieListItem.innerHTML=`
+    <div class="movie-element__image">
+    <img src="${imageValue}" alt="${titleValue}">
+    </div>
+    <div class="movie-element__info">
+    <h2>${titleValue}</h2>
+    <p>${ratingValue}</p>
+    </div>`;
+    movieListItem.addEventListener('click',deleteMovieHandler.bind(null,id))
+    //adds the created list to the Ul(movieList)
+    movieList.append(movieListItem);
 
-    const newMovie ={
-        title:titleValue,
-        image:imageValue,
-        rating:ratingValue
-    };
-    movies.push(newMovie);
-    console.log(movies);
-    toggleMovieModal();
+}
+const clearInputs =()=>{
+    //for more dynamic
+    for (const input of movieInputs){
+        input.value= "";
+    }
+
+     // also works
+     // movieInputs[0].value= "";
+     // movieInputs[1].value= "";
+     // movieInputs[2].value= "";
+}
+const cancelAddMovieHandler = () => {
+    toggleMovieModalHandler();
     clearInputs();
-    renderMoviveList(titleValue,imageValue,ratingValue);
-    updateUI();
+}
+const backdropCancelHandler =()=>{
+    toggleMovieModalHandler();
+    clearInputs();
+}
+const addingMovieHandler = () => {
+    // Saving Input
+    const titleValue = movieInputs[0].value;
+    const imageValue = movieInputs[1].value;
+    const ratingValue = movieInputs[2].value;
+    // checks for validate
+    if (titleValue.trim() === "" ||
+        imageValue.trim() === "" ||
+        ratingValue.trim() === "" ||
+        parseInt(ratingValue) > 5 || parseInt(ratingValue) < 1) {
+        alert('Invalid Input! Rating should be between 1 and 5');
+        return;
+    }
+    const movieObject = {
+        id :Math.random().toString(),
+        Title: titleValue,
+        imgUrl: imageValue,
+        Rating: ratingValue
+    }
+    movies.push(movieObject);
+    console.log(movies)
+    renderUI();
+    clearInputs();
+    toggleMovieModalHandler();
+    movieRender(movieObject.id,titleValue,imageValue,ratingValue);
 }
 
-addMovieModalButton.addEventListener('click',toggleMovieModal);
-backdrop.addEventListener('click',toggleMovieModal);
-cancelAddMovieButton.addEventListener('click',cancelAddMovie);
-confirmAddMovieButton.addEventListener('click',confirmAddMovie);
+addMovieButton.addEventListener('click',
+    toggleMovieModalHandler);
+cancelButton.addEventListener('click',
+    cancelAddMovieHandler);
+addButton.addEventListener('click',
+    addingMovieHandler);
+backdrop.addEventListener('click',backdropCancelHandler);
