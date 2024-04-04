@@ -4,9 +4,9 @@
     <option name="show" value="PROJECT_FILES" />
     <option name="description" value="" />
     <option name="theme" value="material" />
-    <option name="button1Title" value="" />
-    <option name="button1Url" value="" />
-    <option name="button2Title" value="" />
-    <option name="button2Url" value="" />
+    <option name="button1Title" value="Clip of the Year" />
+    <option name="button1Url" value="https://www.tiktok.com/@quran_c1rem/video/7315455168940690693" />
+    <option name="button2Title" value="Repository" />
+    <option name="button2Url" value="https://github.com/Amr-X/JavaScript-Course" />
   </component>
 </project>
