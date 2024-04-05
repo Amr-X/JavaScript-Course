@@ -151,3 +151,35 @@
 //^ is marked for the elements of the array (currentValue)
 //! is marked for the returned value
 
+//split() for string,join()for array
+// const stringdata ='amr;khaled;mohi'; //how to separate that in array?
+// stringdata.split(";"); //[amr,khaled,mohi]
+// const arrayData =['amr','khaled']; // how to join them in a string?
+// //console.log(arrayData.join(//what should be between them default ,)); //amr,khaled
+// console.log(arrayData.join(' ')); // amr khaled
+
+//...spread (useful)
+// const numbers =[2,3,4,6,7,4];
+// console.log(...numbers) //2,3,4,6,7,4
+// Math.min(numbers); //will not works
+// Math.min(...numbers); //2
+// //----------------------------
+// const persons =[{name:'amr',age:19},{name:'khaled',age:20}];
+// const copiedPersons = [...persons];
+// //here is Big BIG BIG NOTE - what is happening is it copies values AND ADDRESSES (WATCH OUT!)
+// persons.push({name:'mohammed',age:22}); //this will not affect copiedPersons
+// persons[0].age=20; //will change amr age note that it affect copiedPersons because it copies it as address
+// // they have the same address changing the original affects the copied one
+// console.log(persons,copiedPersons);
+
+//Array Destruction (assigning elements to new variables)
+// const person =['amr','khalid','student',30];
+// // const firstName = person[0];
+// // const lastName = person[1];
+// const [firstName,lastName,...moreInfo]=person;
+// //...moreInfo is the rest parameter takes other stuff which is a student and 30 puts them in an array
+// console.log(firstName,lastName,moreInfo);//amr khaled ['student',30]
+
+
+
+
