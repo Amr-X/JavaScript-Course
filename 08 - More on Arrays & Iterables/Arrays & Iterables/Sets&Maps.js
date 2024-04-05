@@ -46,4 +46,13 @@
 //     console.log(value); //access on every value
 // }
 
+// weakset weakmap (for the GC)
+// //if not used anymore, GC handles them
+// let person ={name:'amr'};
+// const persons = new WeakSet();
+// persons.add(person);
+// //... some operations that makes person null
+// //here it becomes handy
+// person =null;
+// // weakmap is the same <3
 
