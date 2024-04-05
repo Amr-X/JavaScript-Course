@@ -62,26 +62,92 @@
 // indexof(); lastindexof();
 // const number =[7,3,5,1,6,1];
 // number.indexOf(1); //return 3 the first index where it found 1 (form the left)
-// number.lastIndexOf(1); //return 0 the first index where it found 1 (form the right)
+// number.lastIndexOf(1); //return 5 the first index where it found 1 (form the right)
 // //BUT
 // const personData =[{name:'max'},{name:'amr'}];
 // console.log(personData.indexOf({name:'amr'})); // will not work because of the object reference
 // not finding anything returns -1 (remember that)
 //_________________________________________________________
 
-// find(); findIndex();
-const personData =[{name:'max'},{name:'amr'},{name:'max'}];
-const aa =personData.find((person)=>{
-    return person.name === 'max';
-});
-console.log(aa) //{name:'max'}
-const aaIndex =personData.findIndex((person)=>{
-    return person.name === 'max';
-});
-console.log(aaIndex) //0
+// find(); findIndex(); (keep in mind)
+// const personData =[{name:'max'},{name:'amr'},{name:'max'}];
+// const elementSearched =personData.find((person,indx,persons)=>{
+//     return person.name === 'max';});
+// //This one takes every element that is person for every persons.
+// //Checks for name, is it max?
+// //True -> stores that element to
+// //False -> return undefined
+// console.log(elementSearched) //{name:'max'}
+// const elementSearchedIndex =personData.findIndex((person,indx,persons)=>{
+//     return person.name === 'max'; // just returns the index
+// });
+// console.log(elementSearchedIndex)
+//_________________________________________________________
 
+//include
+// const numbers =[1,3,4,5,3];
+// numbers.includes(5); //true it is there
+// numbers.includes(66); // false not there
+//numbers.indexOf(5) !==-1 //is 5 exist in the array //true
 
+//foreach();
+//works like find but can do stuff for every element in array
+// this means it takes argument like find
+//(person, indx,persons)=>{stuff here}
+// alternative to for of loop, but here you have advantage which
+// is your have the index of that element not like the for of loop
 
+//map();
+// const prices =[10,20,30,40];
+// const tax = 0.2;
+//
+// const pricesTaxed = prices.map((price,indx,persons)=>{
+//     const value =price*(1+tax);
+//     return value;
+//
+// })
+// this replaces every element with the returned value;
+// console.log(pricesTaxed);
 
+//sorted(); reverse();
+// const num =[16,2,1,7];
+// console.log(num.sort()); //[1, 16, 2, 7] lexicographic Sorted by ASCII
+// console.log(num.sort((a,b)=>{ // a and b is two numbers form the array
+//     if (a>b){
+//         return 1
+//     }else if (a<b){
+//         return -1
+//     }else{
+//         return 0
+//     }
+// }))
+//OR
+// console.log(num.sort((a,b)=>{ // a and b is two numbers form the array
+//    return  a-b;
+// }))
+// reverse(); just reverse lol [7,1,2,16]
 
+//filter();
+// const numbers =[1,2,3,4,5,6,7,8];
+// filter anything greater than 4
+// const filteredNumbers=numbers.filter((number,indx,numbers)=>{
+//     return number > 4;
+// });
+// console.log(filteredNumbers) //[5, 6, 7, 8]
+//go through every index get its value in number its index
+//function says is number greater than 4?
+//true-> return true and keep that number to put in a new array
+//false -> return false
+//for short
+//const filteredNumbers=numbers.filter(number=>number > 4);
+
+//reduce();
+// const numbers =[1,2,3,4,5];
+// numbers.reduce((previousValue, currentValue, currentIndex, numbers)=>{
+//     return previousValue+currentValue;
+// },0) //0 is the first previousValue then whatever returns become the second previousValue and so on
+// output is 15
+//here is how (!0+^1)+(!1+^2)+(!3+^3)+(!6+^4)+(!10+^5)
+//^ is marked for the elements of the array (currentValue)
+//! is marked for the returned value
 
