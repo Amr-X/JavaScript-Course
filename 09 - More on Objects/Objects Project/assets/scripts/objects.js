@@ -50,7 +50,7 @@ const renderMovie=(filter ='')=>{
         getFormattedTitle =getFormattedTitle.bind(movie);
         let text =getFormattedTitle()+ " - "
         for (const key in movie.info){
-            if (key!=='title'){
+            if (key!=='title'&&key!=='_title'){
                 text+= `${key}: ${movie.info[key]}`
             }
         }
@@ -64,13 +64,22 @@ const addMovieHandler=()=>{
     const extraNameValue = document.getElementById('extra-name').value;
     const extraValueValue = document.getElementById('extra-value').value;
 
-    if(title.trim()===''||extraValueValue.trim()===''||extraNameValue.trim()===''){
+    if(extraValueValue.trim()===''||extraNameValue.trim()===''){
         alert('Invalid');
         return;
     }
     const newMovie = {
         info:{
-            title, // nice trick
+            set title(val){ //this will trigger if .title is set to a value look at line 90
+                if(val.trim()===''){
+                    this._title='Default'
+                    return;
+                }
+                this._title=val;
+            },
+            get title(){ // this will trigger if tried to access title
+                return this._title;
+            },//title, nice trick
             [extraNameValue]:extraValueValue
         },
         id:Math.random().toString(),
@@ -78,6 +87,8 @@ const addMovieHandler=()=>{
             return this.info.title.toUpperCase(); // refers to object this = newMovie
         }
     };
+    newMovie.info.title = title // this is the val; Setter
+    console.log(newMovie.info.title)// trigger the Getter
     movies.push(newMovie);
     renderMovie();
 }
