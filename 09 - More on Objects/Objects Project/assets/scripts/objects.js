@@ -20,7 +20,9 @@
 // console.log(person['1.3']);
 // //can't do (person.first name) wrong
 
-//Working with the app
+//Working with the app.
+// this is the Global Window, Which has all objects like making functions in the global scope,
+// those functions are methods for the this keyword which is the window global
 const addMovieButton = document.getElementById('add-movie-btn');
 const  searchButton = document.getElementById('search-btn');
 const movies = [];
@@ -44,7 +46,9 @@ const renderMovie=(filter ='')=>{
 
     filteredMovies.forEach((movie)=>{
         const movieEl =document.createElement('li');
-        let text =movie.info.title + " - "
+        let{getFormattedTitle}=movie; //pulling out the getFormattedTitle in a variable(function)
+        getFormattedTitle =getFormattedTitle.bind(movie);
+        let text =getFormattedTitle()+ " - "
         for (const key in movie.info){
             if (key!=='title'){
                 text+= `${key}: ${movie.info[key]}`
@@ -70,8 +74,8 @@ const addMovieHandler=()=>{
             [extraNameValue]:extraValueValue
         },
         id:Math.random().toString(),
-        getFormattedTitle:function (){
-            return this.info.title; // refers to object this = newMovie
+        getFormattedTitle(){
+            return this.info.title.toUpperCase(); // refers to object this = newMovie
         }
     };
     movies.push(newMovie);
