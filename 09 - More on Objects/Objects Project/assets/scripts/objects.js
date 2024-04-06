@@ -91,6 +91,7 @@ const addMovieHandler=()=>{
     console.log(newMovie.info.title)// trigger the Getter
     movies.push(newMovie);
     renderMovie();
+    console.log(newMovie)
 }
 const searchHandler =()=>{
     const filterInput = document.getElementById('filter-title').value;
