@@ -39,7 +39,7 @@ class ProductItem {
         this.product = product;
     }
     addToCart(){
-        console.log(this.product.title +''+ "is added to cart")
+        App.addProductToCart(this.product);
     }
     //product;// like that now you can use it
 
@@ -65,22 +65,40 @@ class ProductList {
 
 class ShoppingCart{
     items=[]
-    render(){
+
+    set carItems(value){
+        this.items = value;
+        this.totalOutput.innerHTML = `<h2>\$${this.totalAmount.toFixed(2)}</h2>`;
+
+    }
+    get totalAmount(){
+        return this.items.reduce(
+            (prevValue,curItem) => prevValue + curItem.price,0
+        );
+    }
+    addProduct(product) {
+        const updatedItems =[...this.items]
+        updatedItems.push(product);
+        this.carItems= updatedItems;
+    }
+
+    render() {
         const cartEl = document.createElement('section');
         cartEl.innerHTML=`
         <h2>\$${0}</h2>
         <button>Order now</button>
         `;
         cartEl.className = 'cart';
+        this.totalOutput = cartEl.querySelector('h2');
         return cartEl;
     }
 }
 
-class App{
+class Shop{
     render(){
         const renderHook =document.getElementById('app');
-        const shoppingCart = new ShoppingCart();
-        const cartEl =shoppingCart.render()
+        this.cart = new ShoppingCart();
+        const cartEl =this.cart.render()
         renderHook.append(cartEl);
         const productList=new ProductList();
         const productListEl = productList.render();
@@ -88,5 +106,17 @@ class App{
     }
 }
 
-const app = new App();
-app.render();
+class App{
+
+    static init(){ //static makes this accessible with no need of creating a new instance
+        const shop = new Shop();
+        shop.render();
+        this.cart = shop.cart;
+    }
+    static addProductToCart(product){
+        this.cart.addProduct(product);
+    }
+}
+
+App.init();
+
